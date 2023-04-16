@@ -1,0 +1,1 @@
+This is where i practice Playwright Automation tests. Will explain in detail later. 
