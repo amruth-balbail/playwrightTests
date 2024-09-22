@@ -12,7 +12,7 @@ test('get started link', async ({ page }) => {
 
   // Click the get started link.
   await page.getByRole('link', { name: 'Get started' }).click();
-
+await page.waitForTimeout(2000)
   // Expects the URL to contain intro.
   await expect(page).toHaveURL(/.*intro/);
 });
