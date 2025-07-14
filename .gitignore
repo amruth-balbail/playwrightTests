@@ -1,6 +1,14 @@
+# Dependencies
 node_modules/
-.env
+package-lock.json
+
+# Playwright specific
 /test-results/
 /playwright-report/
 /videos/
 /screenshots/
+/traces/
+/blob-report/
+
+# Environment variables
+.env
