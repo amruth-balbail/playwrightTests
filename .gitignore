@@ -10,5 +10,5 @@ node_modules/
 /screenshots/
 /playwright/.cache/
 
-# Environment variables
-.env
+# Environment v/ariables
+/.env
