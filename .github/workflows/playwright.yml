@@ -28,6 +28,17 @@ jobs:
           PASSWORD: ${{ secrets.PASSWORD }}
         run: npx playwright test
 
+      # Upload debugging artifacts if tests fail
+      - name: Upload debugging artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-artifacts
+          path: |
+            global-setup-error.png
+            test-results/
+          retention-days: 7
+
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
