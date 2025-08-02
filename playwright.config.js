@@ -1,5 +1,10 @@
 import { defineConfig, devices } from '@playwright/test';
-require('dotenv').config();
+
+// Only load .env file if not in CI environment
+if (!process.env.CI) {
+  require('dotenv').config();
+}
+
 export default defineConfig({
   // Look for test files in the "tests" directory, relative to this configuration file.
   testDir: 'tests',
