@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'linux' }  // Use an Ubuntu/Linux Jenkins agent
+    agent any
 
     options {
         timeout(time: 60, unit: 'MINUTES')  // Match GitHub timeout
