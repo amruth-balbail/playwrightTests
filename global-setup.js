@@ -4,12 +4,7 @@ const fs = require('fs');
 
 module.exports = async () => {
   console.log('Starting global setup...');
-  console.log('BASE_URL:', process.env.BASE_URL);
-  console.log('LOGIN_USER:', process.env.LOGIN_USER ? '***' : 'NOT SET');
-  console.log('PASSWORD:', process.env.PASSWORD ? '***' : 'NOT SET');
-
   const { browser, page } = await UTILS.launchBrowserAndPage();
-
   try {
     console.log('Navigating to:', process.env.BASE_URL);
     await page.goto(process.env.BASE_URL);
