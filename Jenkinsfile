@@ -9,7 +9,7 @@ pipeline {
     environment {
         BASE_URL = credentials('BASE_URL')         
         LOGIN_USER = credentials('LOGIN_USER')       
-        PASSWORD = credentials('LOGIN_PASSWORD')    
+        LOGIN_PASSWORD = credentials('LOGIN_PASSWORD')    
         NODE_ENV = 'production'
     }
 
@@ -47,7 +47,7 @@ pipeline {
                 sh '''
                   export BASE_URL=${BASE_URL}
                   export LOGIN_USER=${LOGIN_USER}
-                  export PASSWORD=${PASSWORD}
+                  export LOGIN_PASSWORD=${LOGIN_PASSWORD}
                   npx playwright test --reporter=html,line
                 '''
             }
@@ -79,8 +79,6 @@ pipeline {
 
     post {
         always {
-            // Clean up workspace to save disk space
-            cleanWs()
             echo 'Pipeline completed.'
         }
         success {
