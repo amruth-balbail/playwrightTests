@@ -22,8 +22,17 @@ pipeline {
 
         stage('Setup Node.js') {
             steps {
-                // Assuming NodeJS plugin is installed and configured with a 'node-lts' tool name
-                tool name: 'node-lts', type: 'NodeJS'
+                script {
+                    // Try to use NodeJS tool if available, otherwise use system Node.js
+                    try {
+                        tool name: 'node-lts', type: 'NodeJS'
+                        echo 'Using Jenkins NodeJS tool'
+                    } catch (Exception e) {
+                        echo 'NodeJS tool not found, using system Node.js'
+                        // Check if Node.js is available on the system
+                        sh 'node --version || echo "Node.js not found on system"'
+                    }
+                }
                 sh 'node --version'
                 sh 'npm --version'
             }
