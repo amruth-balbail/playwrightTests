@@ -30,33 +30,33 @@ pipeline {
                     } catch (Exception e) {
                         echo 'NodeJS tool not found, using system Node.js'
                         // Check if Node.js is available on the system
-                        sh 'node --version || echo "Node.js not found on system"'
+                        bat 'node --version || echo "Node.js not found on system"'
                     }
                 }
-                sh 'node --version'
-                sh 'npm --version'
+                bat 'node --version'
+                bat 'npm --version'
             }
         }
 
         stage('Install dependencies') {
             steps {
-                sh 'npm ci --prefer-offline --no-audit'
+                bat 'npm ci --prefer-offline --no-audit'
             }
         }
 
         stage('Install Playwright Browsers') {
             steps {
-                sh 'npx playwright install --with-deps'
+                bat 'npx playwright install --with-deps'
             }
         }
 
         stage('Run Playwright tests') {
             steps {
                 // Export env variables and run tests
-                sh '''
-                  export BASE_URL=${BASE_URL}
-                  export LOGIN_USER=${LOGIN_USER}
-                  export LOGIN_PASSWORD=${LOGIN_PASSWORD}
+                bat '''
+                  set BASE_URL=%BASE_URL%
+                  set LOGIN_USER=%LOGIN_USER%
+                  set LOGIN_PASSWORD=%LOGIN_PASSWORD%
                   npx playwright test --reporter=html,line
                 '''
             }
