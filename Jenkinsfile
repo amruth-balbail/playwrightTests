@@ -3,12 +3,14 @@ pipeline {
 
     options {
         timeout(time: 60, unit: 'MINUTES')  // Match GitHub timeout
+        buildDiscarder(logRotator(numToKeepStr: '10'))  // Keep last 10 builds
     }
 
     environment {
         BASE_URL = credentials('BASE_URL')         
         LOGIN_USER = credentials('LOGIN_USER')       
         PASSWORD = credentials('LOGIN_PASSWORD')    
+        NODE_ENV = 'production'
     }
 
     stages {
@@ -29,7 +31,7 @@ pipeline {
 
         stage('Install dependencies') {
             steps {
-                sh 'npm ci'
+                sh 'npm ci --prefer-offline --no-audit'
             }
         }
 
@@ -46,26 +48,46 @@ pipeline {
                   export BASE_URL=${BASE_URL}
                   export LOGIN_USER=${LOGIN_USER}
                   export PASSWORD=${PASSWORD}
-                  npx playwright test
+                  npx playwright test --reporter=html,line
                 '''
             }
             post {
-                failure {
-                    archiveArtifacts artifacts: 'global-setup-error.png, test-results/**', allowEmptyArchive: true
+                always {
+                    // Archive test results regardless of success/failure
+                    archiveArtifacts artifacts: 'test-results/**', allowEmptyArchive: true
+                    archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true
+                    
+                    // Publish HTML report if available
+                    publishHTML([
+                        allowMissing: true,
+                        alwaysLinkToLastBuild: true,
+                        keepAll: true,
+                        reportDir: 'playwright-report',
+                        reportFiles: 'index.html',
+                        reportName: 'Playwright Test Report'
+                    ])
                 }
-            }
-        }
-
-        stage('Archive Playwright Report') {
-            steps {
-                archiveArtifacts artifacts: 'playwright-report/**', fingerprint: true
+                failure {
+                    echo 'Tests failed! Check the test results and reports for details.'
+                }
+                success {
+                    echo 'All tests passed successfully!'
+                }
             }
         }
     }
 
     post {
         always {
+            // Clean up workspace to save disk space
+            cleanWs()
             echo 'Pipeline completed.'
+        }
+        success {
+            echo 'Pipeline succeeded!'
+        }
+        failure {
+            echo 'Pipeline failed!'
         }
     }
 }
