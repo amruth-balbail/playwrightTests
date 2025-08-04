@@ -9,7 +9,7 @@ pipeline {
     environment {
         BASE_URL = credentials('BASE_URL')         
         LOGIN_USER = credentials('LOGIN_USER')       
-        LOGIN_PASSWORD = credentials('LOGIN_PASSWORD')
+        LOGIN_PASSWORD = credentials('LOGIN_PASSWORD')    
     }
 
     stages {
@@ -39,7 +39,13 @@ pipeline {
 
         stage('Install dependencies') {
             steps {
-               bat 'npm ci --prefer-offline --no-audit --include=dev'
+                bat 'npm ci --prefer-offline --no-audit --include=dev'
+            }
+        }
+
+        stage('Install Playwright Browsers') {
+            steps {
+                bat 'node node_modules/@playwright/test/cli.js install chromium'
             }
         }
 
