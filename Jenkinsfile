@@ -46,8 +46,7 @@ pipeline {
 
         stage('Install Playwright Browsers') {
             steps {
-                bat 'npm install @playwright/test'
-                bat 'node node_modules/@playwright/test/cli.js install chromium'
+                bat 'npx playwright install chromium'
             }
         }
 
@@ -58,7 +57,7 @@ pipeline {
                   set BASE_URL=%BASE_URL%
                   set LOGIN_USER=%LOGIN_USER%
                   set LOGIN_PASSWORD=%LOGIN_PASSWORD%
-                  node node_modules/@playwright/test/cli.js test --reporter=html,line
+                  npm test
                 '''
             }
             post {
