@@ -9,8 +9,7 @@ pipeline {
     environment {
         BASE_URL = credentials('BASE_URL')         
         LOGIN_USER = credentials('LOGIN_USER')       
-        LOGIN_PASSWORD = credentials('LOGIN_PASSWORD')    
-        NODE_ENV = 'production'
+        LOGIN_PASSWORD = credentials('LOGIN_PASSWORD')
     }
 
     stages {
@@ -40,7 +39,7 @@ pipeline {
 
         stage('Install dependencies') {
             steps {
-                bat 'npm ci --prefer-offline --no-audit'
+               bat 'npm ci --prefer-offline --no-audit --include=dev'
             }
         }
 
