@@ -51,7 +51,7 @@ pipeline {
                   set BASE_URL=%BASE_URL%
                   set LOGIN_USER=%LOGIN_USER%
                   set LOGIN_PASSWORD=%LOGIN_PASSWORD%
-                  npx playwright test --reporter=html,line
+                  node node_modules/@playwright/test/cli.js test --reporter=html,line
                 '''
             }
             post {
