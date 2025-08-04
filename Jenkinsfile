@@ -44,26 +44,6 @@ pipeline {
             }
         }
 
-        stage('Install Playwright Browsers') {
-            steps {
-                script {
-                    // Try multiple approaches to install browsers
-                    try {
-                        echo 'Attempting to install Playwright browsers...'
-                        bat 'npx playwright install chromium'
-                    } catch (Exception e) {
-                        echo 'npx failed, trying alternative approach...'
-                        try {
-                            bat 'node node_modules/@playwright/test/cli.js install chromium'
-                        } catch (Exception e2) {
-                            echo 'Direct CLI failed, trying npm script...'
-                            bat 'npm run playwright:install'
-                        }
-                    }
-                }
-            }
-        }
-
         stage('Run Playwright tests') {
             steps {
                 // Export env variables and run tests
