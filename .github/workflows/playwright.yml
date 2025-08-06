@@ -25,7 +25,7 @@ jobs:
         env:
           BASE_URL: ${{ vars.BASE_URL }}
           LOGIN_USER: ${{ secrets.LOGIN_USER }}
-          PASSWORD: ${{ secrets.PASSWORD }}
+          PASSWORD: ${{ secrets.LOGIN_PASSWORD }}
         run: npx playwright test
 
       # Upload debugging artifacts if tests fail
