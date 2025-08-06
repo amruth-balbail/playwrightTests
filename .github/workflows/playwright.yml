@@ -31,7 +31,6 @@ jobs:
           LOGIN_PASSWORD: ${{ secrets.LOGIN_PASSWORD }}
         run: |
           npx playwright test
-          npx playwright show-report --viewer=false
 
       - name: Upload debugging artifacts (if tests fail)
         if: failure()
