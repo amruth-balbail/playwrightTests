@@ -18,6 +18,7 @@ test.describe('Second tab handling', () => {
 });
 
  test('Child window method 2', async ({ page }) => {
+  console.log('srating the test - Child window method 2')
   // create a child window using a browser context
   const browser = await chromium.launch();
   const context = await browser.newContext();
