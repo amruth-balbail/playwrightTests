@@ -45,3 +45,20 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
+
+  deploy-report:
+    needs: test
+    if: ${{ always() }}
+    runs-on: ubuntu-22.04
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: playwright-report
+          path: ./playwright-report
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./playwright-report
+      - uses: actions/deploy-pages@v4
