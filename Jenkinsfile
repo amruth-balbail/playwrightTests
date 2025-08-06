@@ -28,7 +28,6 @@ pipeline {
                         echo 'Using Jenkins NodeJS tool'
                     } catch (Exception e) {
                         echo 'NodeJS tool not found, using system Node.js'
-                        // Check if Node.js is available on the system
                         bat 'node --version || echo "Node.js not found on system"'
                     }
                 }
@@ -51,7 +50,6 @@ pipeline {
 
         stage('Run Playwright tests') {
             steps {
-                // Export env variables and run tests
                 bat '''
                   set BASE_URL=%BASE_URL%
                   set LOGIN_USER=%LOGIN_USER%
@@ -61,18 +59,18 @@ pipeline {
             }
             post {
                 always {
-                    // Archive test results regardless of success/failure
+                    // ✅ Archive artifacts (optional downloads)
                     archiveArtifacts artifacts: 'test-results/**', allowEmptyArchive: true
                     archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true
                     
-                    // Publish HTML report if available
+                    // ✅ Publish Playwright HTML report to Jenkins sidebar
                     publishHTML([
-                        allowMissing: true,
+                        allowMissing: false,
                         alwaysLinkToLastBuild: true,
                         keepAll: true,
                         reportDir: 'playwright-report',
                         reportFiles: 'index.html',
-                        reportName: 'Playwright Test Report'
+                        reportName: 'Playwright Report'
                     ])
                 }
                 failure {
