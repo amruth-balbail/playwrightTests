@@ -92,19 +92,6 @@ npm run test:debug
 - **Artifacts**: Screenshots, videos, traces
 - **Access**: Available in both GitHub Actions and Jenkins
 
-## 🛠️ Configuration
-
-### Test Constants
-
-```javascript
-// testConstants.js
-module.exports = {
-  USERNAME_FIELD: '#user-name',
-  PASSWORD_FIELD: '#password',
-  LOGIN_BUTTON: '#login-button',
-}
-```
-
 ## 🔐 Security
 
 - **Local**: `.env` file (not committed)
