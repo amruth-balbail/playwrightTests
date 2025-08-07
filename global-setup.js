@@ -7,7 +7,7 @@ module.exports = async () => {
   const { browser, page } = await UTILS.launchBrowserAndPage();
   try {
     console.log('Navigating to:', process.env.BASE_URL);
-    await page.goto(process.env.BASE_URL);
+    await page.goto(process.env.BASE_URL); 
     
     console.log('Current page URL:', page.url());
     console.log('Page title:', await page.title());

@@ -50,8 +50,8 @@ npx playwright install
 ```bash
 # Create .env file
 BASE_URL=https://www.saucedemo.com
-LOGIN_USER=your_username
-PASSWORD=your_password
+LOGIN_USER=your_username (get it from https://www.saucedemo.com)
+PASSWORD=your_password (get it from https://www.saucedemo.com)
 ```
 
 **CI/CD:**
