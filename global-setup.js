@@ -1,34 +1,29 @@
-const { expect, chromium } = require('@playwright/test');
+const { expect } = require('@playwright/test');
 const UTILS = require('./utils/utils');
-const fs = require('fs');
+const LoginPage = require('./pages/LoginPage');
 
 module.exports = async () => {
   console.log('Starting global setup...');
   const { browser, page } = await UTILS.launchBrowserAndPage();
+
   try {
+    const loginPage = new LoginPage(page);
+
     console.log('Navigating to:', process.env.BASE_URL);
-    await page.goto(process.env.BASE_URL); 
-    
+    await page.goto(process.env.BASE_URL);
+
     console.log('Current page URL:', page.url());
     console.log('Page title:', await page.title());
 
     // Wait for login form to be visible
     console.log('Waiting for login form...');
-    await expect(page.locator('#user-name')).toBeVisible({ timeout: 10000 });
+    await expect(loginPage.usernameInput).toBeVisible({ timeout: 10000 });
     console.log('Login form found');
 
-    // Fill in login credentials
+    // Login using the page object
     console.log('Filling login credentials...');
-    await page.locator('#user-name').fill(process.env.LOGIN_USER);
-    await page.locator('#password').fill(process.env.LOGIN_PASSWORD);
-    
-    console.log('Clicking login button...');
-    await page.locator('#login-button').click();
+    await loginPage.login(process.env.LOGIN_USER, process.env.LOGIN_PASSWORD);
 
-    // Wait for navigation and page load
-    console.log('Waiting for page to load after login...');
-    await page.waitForLoadState('networkidle', { timeout: 10000 });
-    
     console.log('Current page URL after login:', page.url());
     console.log('Page title after login:', await page.title());
 
@@ -44,15 +39,15 @@ module.exports = async () => {
 
   } catch (error) {
     console.error('Global setup failed:', error.message);
-    
+
     // Take screenshot for debugging
     await page.screenshot({ path: 'global-setup-error.png' });
     console.log('Screenshot saved as global-setup-error.png');
-    
+
     // Log page content for debugging
     const pageContent = await page.content();
     console.log('Page HTML:', pageContent.substring(0, 1000) + '...');
-    
+
     throw error;
   } finally {
     await browser.close();
